@@ -48,40 +48,6 @@ class CreateMicrostructure:
 
         # Store the generated ellipses
         self.ellipses = ellipses
-
-    def rasterizeEllipsoids(self):
-        dx = self.dimensions[0] / self.gridSize[0]
-        dy = self.dimensions[1] / self.gridSize[1]
-
-        # Create a grid to store the rasterized microstructure (0: outside, 1: inside)
-        raster = np.zeros((self.gridSize[0], self.gridSize[1]), dtype=int)
-
-        # Loop through all grid cells to mark the cells that are within the microstructure 
-        for i in range(self.gridSize[0]):
-            for j in range(self.gridSize[1]):
-                x = (i + 0.5) * dx
-                y = (j + 0.5) * dy
-
-                # Loop through all ellipsoids
-                for el in self.ellipses:
-                    x_center, y_center, major_axis, minor_axis, rotation_angle = el
-
-                    # Transform the grid point into the ellipse's local coordinate system
-                    cos_theta = np.cos(rotation_angle)
-                    sin_theta = np.sin(rotation_angle)
-
-                    # Rotate the grid point around the ellipse's center
-                    x_rot = cos_theta * (x - x_center) + sin_theta * (y - y_center)
-                    y_rot = -sin_theta * (x - x_center) + cos_theta * (y - y_center)
-
-                    # Check if the point is inside the ellipse
-                    if (x_rot / major_axis) ** 2 + (y_rot / minor_axis) ** 2 <= 1:
-                        raster[i, j] = 1  # Mark the cell as inside the ellipse
-                        break  # No need to check other ellipses for this cell
-        
-        # Store the rasterized grid in the class for further use
-        self.raster = raster
-        return raster
     
     def rasterizeEllipsoidsVectorized(self):
         # Create 2D meshgrid of physical coordinates
