@@ -76,3 +76,31 @@ class CreateMicrostructure:
 
         self.raster = raster.astype(int)
         return self.raster
+
+
+# Record the start time
+start_time = time.time()
+
+micro = CreateMicrostructure(dimensions=(1.0, 1.0), gridSize=(100, 100), seed=42, density=10)
+micro.generateEllipsoidalMicrostructure(
+    n=100,
+    size_bounds=(0.01, 0.05),
+    ellipticity_bounds=(0.1, 0.2),
+    rotation_bounds=(0, 2 * np.pi)
+)
+# raster = micro.rasterizeEllipsoids()
+raster = micro.rasterizeEllipsoidsVectorized()
+
+# Record the end time
+end_time = time.time()
+
+# Calculate the total run time
+total_run_time = end_time - start_time
+
+# Print the total run time
+print(f"Total run time: {total_run_time} seconds")
+
+# Visualize the rasterized grid
+plt.imshow(raster, extent=(0, 1, 0, 1), origin='lower', cmap='Greys')
+plt.colorbar(label='Inside Ellipsoid')
+plt.show()
