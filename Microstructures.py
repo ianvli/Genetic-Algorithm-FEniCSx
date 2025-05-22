@@ -88,8 +88,7 @@ micro.generateEllipsoidalMicrostructure(
     ellipticity_bounds=(0.1, 0.2),
     rotation_bounds=(0, 2 * np.pi)
 )
-# raster = micro.rasterizeEllipsoids()
-raster = micro.rasterizeEllipsoidsVectorized()
+raster = micro.rasterizeEllipsoids()
 
 # Record the end time
 end_time = time.time()
