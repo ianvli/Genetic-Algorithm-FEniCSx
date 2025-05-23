@@ -140,7 +140,6 @@ class CreateMicrostructure:
                 tmax = min(max(tx1, tx2), max(ty1, ty2))
 
                 if tmax>tmin and tmin > 0 and tmax > 0:
-                    print("I am here")
                     fibers.append([beta1, beta2]) # intersection with microstructure -> add fiber
 
             elif theta < 0: # Add ghost fibers to the left of the microstructure
